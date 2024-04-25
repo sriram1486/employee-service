@@ -18,16 +18,20 @@ pipeline {
 		   sh 'cp -r target/*.jar docker'
            }
         }
-	 
-        stage('Build docker image') {
-           steps {
-               script {         
-                 def customImage = docker.build('sriram1406/employee-service', "./docker")
-                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                 customImage.push("${env.BUILD_NUMBER}")
-                 }                     
-           }
+      stage('Docker Build') {
+      agent any
+      steps {
+        sh 'docker build -t shanem/spring-petclinic:latest .'
+      }
+    }
+    stage(' Push Docker Image'  ) {
+      agent any
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push shanem/spring-petclinic:latest'
         }
-	}
+      }
+    }
     }
 }
