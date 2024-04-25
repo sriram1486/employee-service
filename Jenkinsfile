@@ -19,15 +19,14 @@ pipeline {
            }
         }
 	 
-        stage('Build docker image') {
-           steps {
-               script {         
-                 def customImage = docker.build('sriram1406/employee-service', "./docker")
-                 docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                 customImage.push("${env.BUILD_NUMBER}")
-                 }                     
-           }
-        }
-	}
+      stage('Docker Build') {
+       agent any
+       steps {
+         sh 'docker build -t shanem/spring-petclinic:latest .'
+       }	  
+     stage('Email Notification') {
+     	 mail bcc: '', body: 'Delivery jar file is done',
+	cc: '', from: '', replyTo: '', subject: 'Jenkins job', to: 'sriramulareddy@gmail.com'
+    }
     }
 }
