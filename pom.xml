@@ -69,6 +69,17 @@
 	<build>
 		<plugins>
 			<plugin>
+		                <groupId>com.google.cloud.tools</groupId>
+		                <artifactId>jib-maven-plugin</artifactId>
+		                <version>3.2.1</version>
+		                <configuration>
+		                    <from>
+		                        <image>eclipse-temurin:17.0.4.1_1-jre</image>
+		                    </from>
+		                    <to>registry.hub.docker.com/sriram1406/${project.artifactId}</to>
+		                </configuration>
+                       </plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.8</version>
