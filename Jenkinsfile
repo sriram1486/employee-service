@@ -8,7 +8,7 @@ pipeline {
         stage('Build maven ') {
             steps { 
                     sh 'pwd'      
-                    sh 'mvn  clean install package'
+                    sh 'mvn compile jib:build'
             }
         }
         
@@ -18,20 +18,5 @@ pipeline {
 		   sh 'cp -r target/*.jar docker'
            }
         }
-      stage('Docker Build') {
-      agent any
-      steps {
-        sh 'docker build -t sriram1406/employee-service:latest .'
-      }
-    }
-    stage(' Push Docker Image'  ) {
-      agent any
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-          sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
-          sh 'docker push sriram1406/employee-service:latest'
-        }
-      }
-    }
     }
 }
