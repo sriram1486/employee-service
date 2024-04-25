@@ -28,10 +28,6 @@ pipeline {
                  }                     
            }
         }
-	  }
-       stage('Email Notification') {
-	  mail bcc: '', body: 'Delivery jar file is done',
-	     cc: '', from: '', replyTo: '', subject: 'Jenkins job', to: 'sriramulareddy@gmail.com'
-       }
+	}
     }
 }
